@@ -1,11 +1,7 @@
 <html>
 	<body>
+		<script src="selectText.js"></script>
 		<input type="text" value="Launch title" id="headText" onselect="textSelected(this)">
-		<p>your selected text:<span id="selectedText"></span></p>
-		<script>
-		function textSelected(input) { 
-			console.log(input.target.value.selectionStart);
-		};		
-		</script>
+		<p>your selected text:<span id="selectedText"></span></p>				
 	</body>
 </html>
