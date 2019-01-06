@@ -9,6 +9,7 @@ function calculateEmi() {
 
     var monthlyRoiFract=(roi/12)/100;
     var emi=(principal*monthlyRoiFract*Math.pow(1+monthlyRoiFract,tenure))/(Math.pow(1+monthlyRoiFract,tenure)-1);
-    
+    emi=Math.round(emi);
+
     document.getElementById("emi").innerHTML=emi;
 }
