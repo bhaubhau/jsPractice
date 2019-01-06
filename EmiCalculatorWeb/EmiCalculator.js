@@ -3,13 +3,21 @@
 })();
 
 function calculateEmi() { 
-    var principal=Number(document.getElementById("sanctionedAmount").value);
-    var roi=Number(document.getElementById("roi").value);
-    var tenure=Number(document.getElementById("tenure").value);
+    let principal=Number(document.getElementById("sanctionedAmount").value);
+    let roi=Number(document.getElementById("roi").value);
+    let tenure=Number(document.getElementById("tenure").value);
+    let monthlyRoiFract=0;
+    let emi=0;
 
-    var monthlyRoiFract=(roi/12)/100;
-    var emi=(principal*monthlyRoiFract*Math.pow(1+monthlyRoiFract,tenure))/(Math.pow(1+monthlyRoiFract,tenure)-1);
-    emi=Math.round(emi);
-
+    if(principal>0 && roi>0 && tenure>0)
+    {
+        monthlyRoiFract=(roi/12)/100;
+        emi=(principal*monthlyRoiFract*Math.pow(1+monthlyRoiFract,tenure))/(Math.pow(1+monthlyRoiFract,tenure)-1);
+        emi=Math.round(emi);
+    }
+    else
+    {
+        emi=0;        
+    }
     document.getElementById("emi").innerHTML=emi;
 }
