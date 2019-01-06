@@ -1,5 +1,6 @@
 (function init(){
     setInterval(calculateEmi,100);
+    rearrangeROITrends();
 })();
 
 function calculateEmi() { 
@@ -20,4 +21,8 @@ function calculateEmi() {
         emi=0;        
     }
     document.getElementById("emi").innerHTML=emi;
+}
+
+function rearrangeROITrends() {
+    console.log(document.getElementById("roiTrendsTable").getElementsByTagName("tr").length);
 }
