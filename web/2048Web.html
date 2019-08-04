@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>2048</title>
+	<style>
+		td.tile {
+			border: 1px solid black;
+			width: 70px;
+			height: 70px;
+		}
+
+		i {
+			border: solid black;
+			border-width: 0 3px 3px 0;
+			display: inline-block;
+			padding: 3px;
+		}
+
+		.right {
+			transform: rotate(-45deg);
+			-webkit-transform: rotate(-45deg);
+		}
+
+		.left {
+			transform: rotate(135deg);
+			-webkit-transform: rotate(135deg);
+		}
+
+		.up {
+			transform: rotate(-135deg);
+			-webkit-transform: rotate(-135deg);
+		}
+
+		.down {
+			transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1 style="text-align: center">2048</h1>
+	<table style="margin-left: auto; margin-right: auto; text-align: center">
+		<tr>
+			<td></td>
+			<td>
+				<button type="button">
+					<i class="up"></i>
+				</button>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button">
+					<i class="left"></i>
+				</button>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+					</tr>
+					<tr>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+					</tr>
+					<tr>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+					</tr>
+					<tr>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+						<td class="tile"></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<button type="button">
+					<i class="right"></i>
+				</button>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<button type="button">
+					<i class="down"></i>
+				</button>
+			</td>
+			<td></td>
+		</tr>
+	</table>
+	<script>
+		var tileValues = [2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0];
+		var min = 0;
+    	var max = 100;
+		(function updateTiles() {
+			setInterval(function () {
+				let tileElements = Array.from(document.getElementsByClassName("tile"));
+				tileElements.forEach(function (tileElement, index) {
+					if (tileValues[index] != 0) {
+						tileElement.innerHTML = tileValues[index];
+					} else {
+						tileElement.innerHTML = "";
+					}
+				});
+			}, 200);
+		})();
+		(function updateValues() {
+			setInterval(function () {
+				tileValues=[];
+				for(var i=0;i<16;i++) {					
+    				tileValues.push(Math.floor(Math.random() * (max - min + 1)) + min);
+				}
+			}, 2000);
+		})();
+	</script>
+</body>
+
+</html>
