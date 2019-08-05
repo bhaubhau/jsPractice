@@ -102,29 +102,119 @@
 		</tr>
 	</table>
 	<script>
-		var tileValues = [2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0];
-		var min = 0;
-    	var max = 100;
-		(function updateTiles() {
+		var currentTileValues = [];
+		var rows = 4;
+		var columns = 4;
+
+		//////////////////////////////////To Be deleted////////////////////////////////
+		function generateRandomMatrix() {
+			let minValue = 0;
+			let maxValue = 100;
+			let values = [];
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				rowValues = [];
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					rowValues.push(getRandomInteger(minValue, maxValue));
+				}
+				values.push(rowValues);
+			}
+			return values;
+		}
+
+		(function updateValuesRandomly() {
+			setInterval(function () {
+				//currentTileValues = generateRandomMatrix();
+				//currentTileValues = generateInsertionMatrix();
+				insertTile(generateInsertionMatrix());
+			}, 2000);
+		})();
+		/////////////////////////////////////////////////////////////////////////////
+
+		(function init() {
+			let initialInsertionMatrix=[];
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				rowValues = [];
+				rowValuesInitialInsertionMatrix = [];
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					rowValues.push(0);
+					rowValuesInitialInsertionMatrix.push(2);
+				}
+				currentTileValues.push(rowValues);
+				initialInsertionMatrix.push(rowValuesInitialInsertionMatrix);
+			}
+			insertTile(initialInsertionMatrix);
+			insertTile(initialInsertionMatrix);
+		})();
+
+		(function updateDisplayedTiles() {
 			setInterval(function () {
 				let tileElements = Array.from(document.getElementsByClassName("tile"));
 				tileElements.forEach(function (tileElement, index) {
-					if (tileValues[index] != 0) {
-						tileElement.innerHTML = tileValues[index];
+					let rowIndex = Math.floor(index / columns);
+					let columnIndex = index % columns;
+					let value = currentTileValues[rowIndex][columnIndex];
+					if (value != 0) {
+						tileElement.innerHTML = value;
 					} else {
 						tileElement.innerHTML = "";
 					}
 				});
 			}, 200);
 		})();
-		(function updateValues() {
-			setInterval(function () {
-				tileValues=[];
-				for(var i=0;i<16;i++) {					
-    				tileValues.push(Math.floor(Math.random() * (max - min + 1)) + min);
+
+		function getRandomInteger(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function shuffle(arrayValues) {
+			values = [];
+			while (arrayValues.length > 0) {
+				removeIndex = getRandomInteger(1, arrayValues.length) - 1;
+				values.push(arrayValues.splice(removeIndex, 1)[0]);
+			}
+			return values;
+		}
+
+		function generateInsertionMatrix() {
+			/*
+			Below two parameters are used to generate one value which is doubled than the least value at random times 
+			so as to increase the complexity of game
+			*/
+			doubledTileMinIndex = 30;
+			doubledTileMaxIndex = 50;
+			minInsertionValue = 2;
+			doubledTileIndex = getRandomInteger(doubledTileMinIndex, doubledTileMaxIndex);
+			let values = [];
+			for (let index = 0; index < doubledTileIndex; index++) {
+				values.push(minInsertionValue);
+			}
+			values.push(minInsertionValue * 2);
+			values = shuffle(values);
+			let insertionValues = values.slice(0, 16);
+			values = [];
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				rowValues = [];
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					rowValues.push(insertionValues[(rowIndex * columns) + columnIndex]);
 				}
-			}, 2000);
-		})();
+				values.push(rowValues);
+			}
+			return values;
+		}	
+
+		function insertTile(insertionMatrix) {	
+			let blankIndices=[];
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					if(currentTileValues[rowIndex][columnIndex]==0) {
+						blankIndex=[rowIndex, columnIndex];
+						blankIndices.push(blankIndex);						
+					}
+				}
+			}
+			insertionIndex=blankIndices[getRandomInteger(1, blankIndices.length) - 1];
+			currentTileValues[insertionIndex[0]][insertionIndex[1]]=insertionMatrix[insertionIndex[0]][insertionIndex[1]];
+		}
 	</script>
 </body>
 
