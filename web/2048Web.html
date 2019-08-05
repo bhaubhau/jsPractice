@@ -45,7 +45,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<button type="button" onclick="buttonClicked()">
+				<button type="button" onclick="upClicked()">
 					<i class="up"></i>
 				</button>
 			</td>
@@ -53,7 +53,7 @@
 		</tr>
 		<tr>
 			<td>
-				<button type="button" onclick="buttonClicked()">
+				<button type="button" onclick="leftClicked()">
 					<i class="left"></i>
 				</button>
 			</td>
@@ -86,7 +86,7 @@
 				</table>
 			</td>
 			<td>
-				<button type="button" onclick="buttonClicked()">
+				<button type="button" onclick="rightClicked()">
 					<i class="right"></i>
 				</button>
 			</td>
@@ -94,7 +94,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<button type="button" onclick="buttonClicked()">
+				<button type="button" onclick="downClicked()">
 					<i class="down"></i>
 				</button>
 			</td>
@@ -194,6 +194,96 @@
 		function buttonClicked() {
 			insertTile(generateInsertionMatrix());
 			updateDisplayedTiles();
+		}
+
+		function pullValues(inputArray) {
+			pulledArray = [];
+			inputArray.forEach(function (value) {
+				if (value != 0) {
+					pulledArray.push(value);
+				}
+			});
+			for (let index = pulledArray.length; index < inputArray.length; index++) {
+				pulledArray.push(0);
+			}
+			return pulledArray;
+		}
+
+		function mergeValues(inputArray) {
+			inputArray = pullValues(inputArray);
+			for (let index = 0; index < inputArray.length - 1; index++) {
+				if (inputArray[index] == inputArray[index + 1]) {
+					inputArray[index] = inputArray[index] * 2;
+					inputArray[index + 1] = 0;
+					index = index + 1;
+				}
+			}
+			inputArray = pullValues(inputArray);
+			return inputArray;
+		}
+
+		function upClicked() {
+			for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+				columnValues = [];
+				for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+					columnValues.push(currentTileValues[rowIndex][columnIndex]);
+				}
+				columnValues = mergeValues(columnValues);
+				let index = 0;
+				for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+					currentTileValues[rowIndex][columnIndex] = columnValues[index];
+					index = index + 1;
+				}
+			}
+			buttonClicked();
+		}
+
+		function downClicked() {
+			for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+				columnValues = [];
+				for (let rowIndex = rows - 1; rowIndex >= 0; rowIndex--) {
+					columnValues.push(currentTileValues[rowIndex][columnIndex]);
+				}
+				columnValues = mergeValues(columnValues);
+				let index = 0;
+				for (let rowIndex = rows - 1; rowIndex >= 0; rowIndex--) {
+					currentTileValues[rowIndex][columnIndex] = columnValues[index];
+					index = index + 1;
+				}
+			}
+			buttonClicked();
+		}
+
+		function leftClicked() {
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				rowValues = [];
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					rowValues.push(currentTileValues[rowIndex][columnIndex]);
+				}
+				rowValues = mergeValues(rowValues);
+				let index = 0;
+				for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+					currentTileValues[rowIndex][columnIndex] = rowValues[index];
+					index = index + 1;
+				}
+			}
+			buttonClicked();
+		}
+
+		function rightClicked() {
+			for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+				rowValues = [];
+				for (let columnIndex = columns - 1; columnIndex >= 0; columnIndex--) {
+					rowValues.push(currentTileValues[rowIndex][columnIndex]);
+				}
+				rowValues = mergeValues(rowValues);
+				let index = 0;
+				for (let columnIndex = columns - 1; columnIndex >= 0; columnIndex--) {
+					currentTileValues[rowIndex][columnIndex] = rowValues[index];
+					index = index + 1;
+				}
+			}
+			buttonClicked();
 		}
 	</script>
 </body>
